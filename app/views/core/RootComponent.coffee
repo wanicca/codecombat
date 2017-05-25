@@ -17,13 +17,15 @@ module.exports = class RootComponent extends RootView
 
       @vueComponent = new @VueComponent({
         el: @$el.find('#site-content-area')[0]
+        propsData: @propsData
         store
       })
       window.rootComponent = @vueComponent # Don't use this in code! Just for ease of development
     super(arguments...)
 
   destroy: ->
-    store.unregisterModule('page')
+    if @vuexModule
+      store.unregisterModule('page')
     @vueComponent.$destroy()
     @vueComponent.$store = silentStore
     # ignore all further changes to the store, since the module has been unregistered.

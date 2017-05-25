@@ -748,6 +748,7 @@ describe 'GET /db/course_instance/:handle/peer-projects', ->
     yield utils.clearModels([CourseInstance, Course, User, Classroom, Campaign, Level])
     @teacher = yield utils.initUser({role: 'teacher'})
     admin = yield utils.initAdmin()
+    @otherUser = yield utils.initUser({role: 'student'})
     yield utils.loginUser(admin)
     @projectLevel = yield utils.makeLevel({type: 'course', shareable: 'project'})
     @projectLevel2 = yield utils.makeLevel({type: 'course', shareable: 'project'})
@@ -796,4 +797,11 @@ describe 'GET /db/course_instance/:handle/peer-projects', ->
     expect(_.contains(ids, @session.id)).toBe(true)
     expect(_.contains(ids, @session2.id)).toBe(true)
     expect(_.contains(ids, @session3.id)).toBe(true)
+    done()
+
+  it 'returns 403 if you request a course instance that you are not a member of', utils.wrap (done) ->
+    url = utils.getURL("/db/course_instance/#{@courseInstance.id}/peer-projects")
+    yield utils.loginUser(@otherUser)
+    [res, body] = yield request.getAsync({url, json: true})
+    expect(res.statusCode).toBe(403)
     done()

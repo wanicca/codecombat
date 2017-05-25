@@ -743,3 +743,56 @@ describe 'GET /db/course_instance/:handle/my-course-level-sessions', ->
     expect(_.contains(ids, @primerSession.id)).toBe(true)
     done()
 
+describe 'GET /db/course_instance/:handle/peer-projects', ->
+  beforeEach utils.wrap (done) ->
+    yield utils.clearModels([CourseInstance, Course, User, Classroom, Campaign, Level])
+    @teacher = yield utils.initUser({role: 'teacher'})
+    admin = yield utils.initAdmin()
+    yield utils.loginUser(admin)
+    @projectLevel = yield utils.makeLevel({type: 'course', shareable: 'project'})
+    @projectLevel2 = yield utils.makeLevel({type: 'course', shareable: 'project'})
+    @level = yield utils.makeLevel({type: 'course'})
+    @campaign = yield utils.makeCampaign({}, {levels: [@primerLevel, @level, @projectLevel]})
+    @course = yield utils.makeCourse({free: true, releasePhase: 'released'}, {campaign: @campaign})
+    @student = yield utils.initUser({role: 'student'})
+    @student2 = yield utils.initUser({role: 'student'})
+    @prepaid = yield utils.makePrepaid({creator: @teacher.id})
+    members = [@student]
+    yield utils.loginUser(@teacher)
+    @classroom = yield utils.makeClassroom({aceConfig: { language: 'javascript' }}, { members })
+    @courseInstance = yield utils.makeCourseInstance({}, { @course, @classroom })
+    @session = yield utils.makeLevelSession({codeLanguage: 'javascript'}, {level: @projectLevel, creator: @student})
+    @session2 = yield utils.makeLevelSession({codeLanguage: 'javascript'}, {level: @projectLevel, creator: @student2})
+    @session3 = yield utils.makeLevelSession({codeLanguage: 'javascript'}, {level: @projectLevel2, creator: @student2})
+    otherLevel = yield utils.makeLevel({type: 'course'})
+
+    # Other course instance which should be ignored
+    @projectLevel3 = yield utils.makeLevel({type: 'course', shareable: 'project'})
+    @campaign2 = yield utils.makeCampaign({}, {levels: [@projectLevel3]})
+    @course2 = yield utils.makeCourse({free: true, releasePhase: 'released'}, {campaign: @campaign2})
+    @courseInstance2 = yield utils.makeCourseInstance({}, { course: @course2, @classroom })
+
+    # sessions that should NOT be returned by this endpoint
+    otherSessions = yield [
+      utils.makeLevelSession({}, {@level, creator: @student})
+      utils.makeLevelSession({}, {@level, creator: @student2})
+      utils.makeLevelSession({}, {level: @projectLevel, creator: @teacher})
+      utils.makeLevelSession({}, {level: @projectLevel, creator: admin})
+      utils.makeLevelSession({}, {level: otherLevel, creator: @student})
+      utils.makeLevelSession({codeLanguage: 'python'}, {level: @projectLevel, creator: @student})
+      utils.makeLevelSession({codeLanguage: 'python'}, {level: @primerLevel, creator: @student})
+      utils.makeLevelSession({}, {level: @projectLevel3, creator: @student})
+      utils.makeLevelSession({}, {level: @projectLevel3, creator: @student2})
+    ]
+    done()
+
+  it 'returns all project sessions for all members of that course instance', utils.wrap (done) ->
+    url = utils.getURL("/db/course_instance/#{@courseInstance.id}/peer-projects")
+    yield utils.loginUser(@student)
+    [res, body] = yield request.getAsync({url, json: true})
+    expect(res.body.length).toBe(3)
+    ids = (session._id for session in res.body)
+    expect(_.contains(ids, @session.id)).toBe(true)
+    expect(_.contains(ids, @session2.id)).toBe(true)
+    expect(_.contains(ids, @session3.id)).toBe(true)
+    done()

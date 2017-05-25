@@ -250,7 +250,7 @@ module.exports =
       for level in course.levels when level.shareable is 'project'
         levelOriginalQueries.push({
           'level.original': level.original + '',
-          codeLanguage: level.primerLanguage or classroom.get('aceConfig.language')
+          codeLanguage: level.primerLanguage or classroom.get('aceConfig.language') #TODO: Is this appropriate to include for projects?
         })
 
     if levelOriginalQueries.length > 0

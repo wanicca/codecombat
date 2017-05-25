@@ -39,3 +39,9 @@ module.exports = class LevelSessionCollection extends CocoCollection
       url: "/db/level.session/-/recent"
     }, options)
     @fetch(options)
+
+  fetchProjectGallery: (courseInstanceID, options={}) ->
+    options = _.extend({
+      url: "/db/course_instance/#{courseInstanceID}/peer-projects"
+    }, options)
+    @fetch(options)

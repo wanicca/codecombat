@@ -1,0 +1,9 @@
+flat-layout
+  div
+    | Level Sessions:
+    ul
+      li(v-for="session in levelSessions")
+        span(v-if="users && creatorOfSession(session)")
+          {{ creatorOfSession(session).name }}
+        a.view-project-link.btn.btn-lg.btn-forest(data-i18n="todo", :data-session-id="session._id", :href="getProjectViewUrl(session)")
+          | View Project

@@ -1267,6 +1267,7 @@
     my_classes: "Current Classes"
     class_added: "Class successfully added!"
     view_levels: "view all levels in course"
+    view_project_gallery: "view my classmates' projects"
     join_class: "Join A Class"
     join_class_2: "Join class"
     ask_teacher_for_code: "Ask your teacher if you have a CodeCombat class code! If so, enter it below:"

@@ -735,6 +735,7 @@ describe 'GET /db/course_instance/:handle/my-course-level-sessions', ->
     url = utils.getURL("/db/course_instance/#{@courseInstance.id}/my-course-level-sessions")
     yield utils.loginUser(@student)
     [res, body] = yield request.getAsync({url, json: true})
+    expect(res.statusCode).toBe(200)
     expect(res.body.length).toBe(2)
     ids = (session._id for session in res.body)
     expect(_.contains(ids, @session.id)).toBe(true)
@@ -773,7 +774,7 @@ describe 'GET /db/course_instance/:handle/peer-projects', ->
     @campaign2 = yield utils.makeCampaign({}, {levels: [@projectLevel3]})
     @course2 = yield utils.makeCourse({free: true, releasePhase: 'released'}, {campaign: @campaign2})
     yield utils.loginUser(@teacher)
-    @courseInstance2 = yield utils.makeCourseInstance({}, { course: @course2, @classroom })
+    @courseInstance2 = yield utils.makeCourseInstance({}, { course: @course2, @classroom, members })
 
     # sessions that should NOT be returned by this endpoint
     otherSessions = yield [
@@ -792,6 +793,7 @@ describe 'GET /db/course_instance/:handle/peer-projects', ->
     url = utils.getURL("/db/course_instance/#{@courseInstance.id}/peer-projects")
     yield utils.loginUser(@student)
     [res, body] = yield request.getAsync({url, json: true})
+    expect(res.statusCode).toBe(200)
     expect(res.body.length).toBe(3)
     ids = (session._id for session in res.body)
     expect(_.contains(ids, @session.id)).toBe(true)

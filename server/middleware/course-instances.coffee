@@ -238,6 +238,9 @@ module.exports =
     if not courseInstance
       throw new errors.NotFound('Course Instance not found.')
 
+    if not _.any(courseInstance.get('members'), (id) -> id.equals req.user._id)
+      throw new errors.Forbidden('You must be a member of a the given course instance')
+
     classroom = yield Classroom.findById(courseInstance.get('classroomID'))
     if not classroom
       throw new errors.NotFound('Classroom not found.')

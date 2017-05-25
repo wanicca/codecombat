@@ -763,9 +763,9 @@ describe 'GET /db/course_instance/:handle/peer-projects', ->
     yield utils.loginUser(@teacher)
     @classroom = yield utils.makeClassroom({aceConfig: { language: 'javascript' }}, { members })
     @courseInstance = yield utils.makeCourseInstance({}, { @course, @classroom, members })
-    @session = yield utils.makeLevelSession({codeLanguage: 'javascript'}, {level: @projectLevel, creator: @student})
-    @session2 = yield utils.makeLevelSession({codeLanguage: 'javascript'}, {level: @projectLevel, creator: @student2})
-    @session3 = yield utils.makeLevelSession({codeLanguage: 'javascript'}, {level: @projectLevel2, creator: @student2})
+    @session = yield utils.makeLevelSession({published: true, codeLanguage: 'javascript'}, {level: @projectLevel, creator: @student})
+    @session2 = yield utils.makeLevelSession({published: true, codeLanguage: 'javascript'}, {level: @projectLevel, creator: @student2})
+    @session3 = yield utils.makeLevelSession({published: true, codeLanguage: 'javascript'}, {level: @projectLevel2, creator: @student2})
     otherLevel = yield utils.makeLevel({type: 'course'})
     
     # Other course instance which should be ignored
@@ -786,10 +786,11 @@ describe 'GET /db/course_instance/:handle/peer-projects', ->
       utils.makeLevelSession({codeLanguage: 'python'}, {level: @projectLevel, creator: @student})
       utils.makeLevelSession({}, {level: @projectLevel3, creator: @student})
       utils.makeLevelSession({}, {level: @projectLevel3, creator: @student2})
+      utils.makeLevelSession({published: false, codeLanguage: 'javascript'}, {level: @projectLevel2, creator: @student2})
     ]
     done()
 
-  it 'returns all project sessions for all members of that course instance', utils.wrap (done) ->
+  it 'returns all published project sessions for all members of that course instance', utils.wrap (done) ->
     url = utils.getURL("/db/course_instance/#{@courseInstance.id}/peer-projects")
     yield utils.loginUser(@student)
     [res, body] = yield request.getAsync({url, json: true})

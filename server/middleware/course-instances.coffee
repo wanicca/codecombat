@@ -256,7 +256,8 @@ module.exports =
     if levelOriginalQueries.length > 0
       query = {$and: [
         { creator: { $in: courseInstance.get('members').map((s) -> s + '') } },
-        { $or: levelOriginalQueries }
+        { $or: levelOriginalQueries },
+        { published: true }
       ]}
       levelSessions = yield LevelSession.find(query).select(parse.getProjectFromReq(req))
       res.send(session.toObject({req}) for session in levelSessions)

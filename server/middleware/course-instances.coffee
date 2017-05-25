@@ -232,3 +232,30 @@ module.exports =
       res.send(session.toObject({req}) for session in levelSessions)
     else
       res.send []
+
+  fetchPeerProjects: wrap (req, res) ->
+    courseInstance = yield database.getDocFromHandle(req, CourseInstance)
+    if not courseInstance
+      throw new errors.NotFound('Course Instance not found.')
+
+    classroom = yield Classroom.findById(courseInstance.get('classroomID'))
+    if not classroom
+      throw new errors.NotFound('Classroom not found.')
+
+    levelOriginalQueries = []
+    for course in classroom.get('courses') when course._id.equals(courseInstance.get('courseID'))
+      for level in course.levels when level.shareable is 'project'
+        levelOriginalQueries.push({
+          'level.original': level.original + '',
+          codeLanguage: level.primerLanguage or classroom.get('aceConfig.language')
+        })
+
+    if levelOriginalQueries.length > 0
+      query = {$and: [
+        { creator: { $in: courseInstance.get('members').map((s) -> s + '') } },
+        { $or: levelOriginalQueries }
+      ]}
+      levelSessions = yield LevelSession.find(query).select(parse.getProjectFromReq(req))
+      res.send(session.toObject({req}) for session in levelSessions)
+    else
+      res.send []

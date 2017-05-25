@@ -752,24 +752,26 @@ describe 'GET /db/course_instance/:handle/peer-projects', ->
     @projectLevel = yield utils.makeLevel({type: 'course', shareable: 'project'})
     @projectLevel2 = yield utils.makeLevel({type: 'course', shareable: 'project'})
     @level = yield utils.makeLevel({type: 'course'})
-    @campaign = yield utils.makeCampaign({}, {levels: [@primerLevel, @level, @projectLevel]})
+    @campaign = yield utils.makeCampaign({}, {levels: [@level, @projectLevel, @projectLevel2]})
     @course = yield utils.makeCourse({free: true, releasePhase: 'released'}, {campaign: @campaign})
     @student = yield utils.initUser({role: 'student'})
     @student2 = yield utils.initUser({role: 'student'})
     @prepaid = yield utils.makePrepaid({creator: @teacher.id})
-    members = [@student]
+    members = [@student, @student2]
     yield utils.loginUser(@teacher)
     @classroom = yield utils.makeClassroom({aceConfig: { language: 'javascript' }}, { members })
-    @courseInstance = yield utils.makeCourseInstance({}, { @course, @classroom })
+    @courseInstance = yield utils.makeCourseInstance({}, { @course, @classroom, members })
     @session = yield utils.makeLevelSession({codeLanguage: 'javascript'}, {level: @projectLevel, creator: @student})
     @session2 = yield utils.makeLevelSession({codeLanguage: 'javascript'}, {level: @projectLevel, creator: @student2})
     @session3 = yield utils.makeLevelSession({codeLanguage: 'javascript'}, {level: @projectLevel2, creator: @student2})
     otherLevel = yield utils.makeLevel({type: 'course'})
-
+    
     # Other course instance which should be ignored
+    yield utils.loginUser(admin)
     @projectLevel3 = yield utils.makeLevel({type: 'course', shareable: 'project'})
     @campaign2 = yield utils.makeCampaign({}, {levels: [@projectLevel3]})
     @course2 = yield utils.makeCourse({free: true, releasePhase: 'released'}, {campaign: @campaign2})
+    yield utils.loginUser(@teacher)
     @courseInstance2 = yield utils.makeCourseInstance({}, { course: @course2, @classroom })
 
     # sessions that should NOT be returned by this endpoint
@@ -780,7 +782,6 @@ describe 'GET /db/course_instance/:handle/peer-projects', ->
       utils.makeLevelSession({}, {level: @projectLevel, creator: admin})
       utils.makeLevelSession({}, {level: otherLevel, creator: @student})
       utils.makeLevelSession({codeLanguage: 'python'}, {level: @projectLevel, creator: @student})
-      utils.makeLevelSession({codeLanguage: 'python'}, {level: @primerLevel, creator: @student})
       utils.makeLevelSession({}, {level: @projectLevel3, creator: @student})
       utils.makeLevelSession({}, {level: @projectLevel3, creator: @student2})
     ]

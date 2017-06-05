@@ -17,23 +17,26 @@ ProjectGalleryComponent = Vue.extend
   data: ->
     levelSessions: []
     users: []
+    classroom: null
+    course: null
+    courseInstance: null
+    loaded: false
   created: ->
-    api.courseInstances.fetchProjectGallery({ @courseInstanceID })
-    .then (sessions) =>
-      console.log {sessions}
-      @levelSessions = sessions
-      userIDs = _.unique(_.map(sessions, 'creator'))
-      Promise.all userIDs.map (userID) ->
-        api.users.getByHandle(userID)
-    .then (users) =>
-      @users = users
+    Promise.all([
+      api.courseInstances.fetchProjectGallery({ @courseInstanceID }).then (@levelSessions) =>
+        Promise.all(api.users.getByHandle(userID) for userID in _.unique(_.map(@levelSessions, 'creator'))).then((@users) =>)
+      api.courseInstances.getByHandle(@courseInstanceID).then (@courseInstance) =>
+        Promise.all([
+          api.classrooms.getByHandle(@courseInstance.classroomID).then((@classroom) =>),
+          api.courses.getByHandle(@courseInstance.courseID).then((@course) =>)
+        ])
+    ])
   methods:
     getProjectViewUrl: (session) ->
       projectType = 'web-dev'
       levelSlug = 'wanted-poster'
       return "/play/#{projectType}-level/#{levelSlug}/#{session._id}"
     creatorOfSession: (session) ->
-      debugger
       _.find(@users, { _id: session.creator })
 
 module.exports = class ProjectGalleryView extends RootComponent

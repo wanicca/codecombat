@@ -106,6 +106,12 @@ module.exports = class CoursesView extends RootView
         @render()
       @supermodel.trackRequest(levels.fetchForClassroom(classroomID, { data: { project: 'original,primerLanguage,slug' }}))
 
+  courseInstanceHasProject: (courseInstance) ->
+    classroom = @classrooms.get(courseInstance.get('classroomID'))
+    versionedCourse = _.find(classroom.get('courses'), {_id: courseInstance.get('courseID')})
+    levels = versionedCourse.levels
+    _.any(levels, { shareable: 'project' })
+
   onClickLogInButton: ->
     modal = new AuthModal()
     @openModalView(modal)

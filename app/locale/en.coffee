@@ -1364,6 +1364,10 @@
     course_membership_required_to_play: "You'll need to join a course to play this level."
     license_required_to_play: "Ask your teacher to assign a license to you so you can continue to play CodeCombat!"
 
+  project_gallery:
+    no_projects_published: "Be the first to publish a project in this course!"
+    course_projects: "__courseName__ Projects"
+
   teacher:
     assigning_course: "Assigning course"
     course_solution: "Course Solution"

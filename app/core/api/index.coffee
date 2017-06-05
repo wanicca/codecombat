@@ -1,6 +1,9 @@
 module.exports = {
   admin: require('./admin')
+  classrooms: require('./classrooms')
+  courses: require('./courses')
   courseInstances: require('./course-instances')
+  levels: require('./level-sessions')
   levelSessions: require('./level-sessions')
   prepaids: require('./prepaids')
   skippedContacts: require('./skipped-contacts')

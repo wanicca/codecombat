@@ -1,6 +1,7 @@
 RootComponent = require 'views/core/RootComponent'
 FlatLayout = require 'core/components/FlatLayout'
 api = require 'core/api'
+User = require 'models/User'
 
 ProjectGalleryComponent = Vue.extend
   name: 'project-gallery-component'
@@ -30,7 +31,9 @@ ProjectGalleryComponent = Vue.extend
           api.classrooms.getByHandle(@courseInstance.classroomID).then((@classroom) =>),
           api.courses.getByHandle(@courseInstance.courseID).then((@course) =>)
         ])
-    ])
+    ]).then =>
+      @users.forEach (user) =>
+        Vue.set(user, 'broadName', new User(user).broadName())
   methods:
     getProjectViewUrl: (session) ->
       projectType = 'web-dev'

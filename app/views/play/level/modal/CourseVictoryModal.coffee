@@ -71,6 +71,7 @@ module.exports = class CourseVictoryModal extends ModalView
       classroom: @classroom
       levelSessions: @levelSessions
       session: @session
+      courseInstanceID: @courseInstanceID
     })
 
     progressView.once 'done', @onDone, @

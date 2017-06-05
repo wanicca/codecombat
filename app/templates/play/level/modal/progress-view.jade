@@ -42,6 +42,10 @@
     
     if view.shareURL
       .well.well-sm.well-parchment
+        div
+          | You can now view your classmates' projects!
+          a(href=view.galleryURL)
+            | View gallery
         h3.text-uppercase
           if view.level.isType('game-dev')
             span(data-i18n='sharing.share_game')

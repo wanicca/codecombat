@@ -33,7 +33,7 @@ ProjectGalleryComponent = Vue.extend
         ])
     ]).then =>
       @users.forEach (user) =>
-        Vue.set(user, 'broadName', new User(user).broadName())
+        Vue.set(user, 'broadName', User.broadName(user))
   methods:
     getProjectViewUrl: (session) ->
       projectType = 'web-dev'

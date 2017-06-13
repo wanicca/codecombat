@@ -75,7 +75,8 @@
       .col-sm-5.col-sm-offset-2
         // TODO: Add rest of campaign functionality
         if view.level.get('type') === 'course-ladder'
-          button#ladder-btn.btn.btn-illustrated.btn-default.btn-block.btn-lg.text-uppercase Ladder
+          button#ladder-btn.btn.btn-illustrated.btn-default.btn-block.btn-lg.text-uppercase(data-i18n="play_level.ladder")
+            | Ladder
         if view.level.isProject()
           button#publish-btn.btn.btn-illustrated.btn-default.btn-block.btn-lg.text-uppercase(data-i18n="play_level.publish")
             | Publish

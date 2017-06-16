@@ -1,14 +1,17 @@
 flat-layout
-  div.text-center.m-t-5
-    h2(v-if="classroom")
-      {{ classroom.name }}
-    h1(v-if="course")
-      {{ $t('project_gallery.course_projects', { courseName: course.name }) }}
-    div(v-if="_.isEmpty(levelSessions)")
-      {{ $t('project_gallery.no_projects_published') }}
-    ul.project-list.m-t-3(v-else)
-      li.project-list-item(v-for="session in levelSessions")
-        span.creator-name.p-r-1(v-if="users && creatorOfSession(session)")
-          {{ creatorOfSession(session).broadName }}
-        a.view-project-link.btn.btn-lg.btn-forest(data-i18n="todo", :data-session-id="session._id", :href="getProjectViewUrl(session)")
-          | View Project
+  .container.m-t-3
+    p
+      a(href="/students", data-i18n="courses.back_courses")
+    div.text-center.m-t-2
+      h2(v-if="classroom")
+        {{ classroom.name }}
+      h1(v-if="course")
+        {{ $t('project_gallery.course_projects', { courseName: course.name }) }}
+      div(v-if="_.isEmpty(levelSessions)")
+        {{ $t('project_gallery.no_projects_published') }}
+      ul.project-list.m-t-3(v-else)
+        li.project-list-item(v-for="session in levelSessions")
+          span.creator-name.p-r-1(v-if="users && creatorOfSession(session)")
+            {{ creatorOfSession(session).broadName }}
+          a.view-project-link.btn.btn-lg.btn-forest(data-i18n="todo", :data-session-id="session._id", :href="getProjectViewUrl(session)")
+            | View Project

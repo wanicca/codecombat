@@ -13,6 +13,7 @@ module.exports = class ProgressView extends CocoView
     'click #next-level-btn': 'onClickNextLevelButton'
     'click #map-btn': 'onClickMapButton'
     'click #ladder-btn': 'onClickLadderButton'
+    'click #publish-btn': 'onClickPublishButton'
     'click #share-level-btn': 'onClickShareLevelButton'
 
   initialize: (options) ->
@@ -27,15 +28,18 @@ module.exports = class ProgressView extends CocoView
     # Images in Markdown are like ![description](url)
     @nextLevel.get('description', true)  # Make sure the defaults are available
     @nextLevelDescription = marked(utils.i18n(@nextLevel.attributesWithDefaults, 'description').replace(/!\[.*?\]\(.*?\)\n*/g, ''))
-    if @level.get('shareable') is 'project'
+    if @level.isProject()
       @shareURL = urls.playDevLevel({@level, @session, @course})
-      @galleryURL = urls.projectGallery({ @courseInstanceID })
+      # @galleryURL = urls.projectGallery({ @courseInstanceID })
 
   onClickDoneButton: ->
     @trigger 'done'
 
   onClickNextLevelButton: ->
     @trigger 'next-level'
+
+  onClickPublishButton: ->
+    @trigger 'publish'
 
   onClickMapButton: ->
     @trigger 'to-map'

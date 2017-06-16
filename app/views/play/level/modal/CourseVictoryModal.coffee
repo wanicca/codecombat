@@ -7,6 +7,7 @@ ProgressView = require './ProgressView'
 Classroom = require 'models/Classroom'
 utils = require 'core/utils'
 api = require('core/api')
+urls = require 'core/urls'
 
 module.exports = class CourseVictoryModal extends ModalView
   id: 'course-victory-modal'
@@ -51,6 +52,9 @@ module.exports = class CourseVictoryModal extends ModalView
         @supermodel.trackRequest @course.fetchForCourseInstance(@courseInstanceID)
 
     window.tracker?.trackEvent 'Play Level Victory Modal Loaded', category: 'Students', levelSlug: @level.get('slug'), []
+    if @level.isProject()
+      # @shareURL = urls.playDevLevel({@level, @session, @course})
+      @galleryURL = urls.projectGallery({ @courseInstanceID })
 
   onResourceLoadFailed: (e) ->
     if e.resource.jqxhr is @nextLevelRequest
@@ -78,6 +82,7 @@ module.exports = class CourseVictoryModal extends ModalView
     progressView.once 'next-level', @onNextLevel, @
     progressView.once 'to-map', @onToMap, @
     progressView.once 'ladder', @onLadder, @
+    progressView.once 'publish', @onPublish, @
     for view in @views
       view.on 'continue', @onViewContinue, @
     @views.push(progressView)
@@ -121,6 +126,15 @@ module.exports = class CourseVictoryModal extends ModalView
       link = '/students'
     @submitLadder()
     application.router.navigate(link, {trigger: true})
+  
+  onPublish: ->
+    window.tracker?.trackEvent 'Play Level Victory Modal Publish', category: 'Students', levelSlug: @level.get('slug'), []
+    if @session.isFake()
+      application.router.navigate(@galleryURL, {trigger: true})
+    else
+      @session.set({ published: true })
+      @session.save().then =>
+        application.router.navigate(@galleryURL, {trigger: true})
 
   onLadder: ->
     # Preserve the supermodel as we navigate back to the ladder.

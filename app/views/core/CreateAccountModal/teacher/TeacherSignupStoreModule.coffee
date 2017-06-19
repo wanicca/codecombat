@@ -2,31 +2,32 @@ api = require 'core/api'
 DISTRICT_NCES_KEYS = ['district', 'district_id', 'district_schools', 'district_students', 'phone']
 SCHOOL_NCES_KEYS = DISTRICT_NCES_KEYS.concat(['id', 'name', 'students'])
 ncesData = _.zipObject(['nces_'+key, ''] for key in SCHOOL_NCES_KEYS)
+require('core/services/segment')()
 
 module.exports = TeacherSignupStoreModule = {
   namespaced: true
   state: {
     trialRequestProperties: _.assign(ncesData, {
-      organization: ''
-      district: ''
-      city: ''
-      state: ''
-      country: ''
-      phoneNumber: ''
-      role: ''
-      purchaserRole: ''
-      numStudents: ''
-      numStudentsTotal: ''
+      organization: 'Foo'
+      district: 'blah'
+      city: 'Cronville'
+      state: 'NJ'
+      country: 'USA'
+      phoneNumber: '555-555-5555'
+      role: 'Parent'
+      purchaserRole: 'No role in purchase decisions'
+      numStudents: '1-10'
+      numStudentsTotal: '1-500'
       notes: ''
       referrer: ''
       marketingReferrer: ''
-      educationLevel: []
+      educationLevel: ["Elementary"]
       otherEducationLevel: false
       otherEducationLevelExplanation: ''
       siteOrigin: 'create teacher'
-      firstName: ''
-      lastName: ''
-      email: ''
+      firstName: 'Cat'
+      lastName: 'FakeTeacher'
+      email: 'cat+fake@codecombat.com'
     })
     signupForm: {
       name: ''
@@ -76,6 +77,16 @@ module.exports = TeacherSignupStoreModule = {
           properties
         })
       
+      .then =>
+        intercomTraits = _.pick state.trialRequestProperties, ["siteOrigin", "marketingReferrer", "referrer", "notes", "numStudentsTotal", "numStudents", "purchaserRole", "role", "phoneNumber", "country", "state", "city", "district", "organization", "nces_students", "nces_name", "nces_id", "nces_phone", "nces_district_students", "nces_district_schools", "nces_district_id", "nces_district"]
+        intercomTraits.educationLevel_elementary = _.contains state.trialRequestProperties.educationLevel, "Elementary"
+        intercomTraits.educationLevel_middle = _.contains state.trialRequestProperties.educationLevel, "Middle"
+        intercomTraits.educationLevel_high = _.contains state.trialRequestProperties.educationLevel, "High"
+        intercomTraits.educationLevel_college = _.contains state.trialRequestProperties.educationLevel, "College+"
+        debugger
+        application.tracker.identify me.id, intercomTraits
+
+
       .then =>
         signupForm = _.omit(state.signupForm, (attr) -> attr is '')
         ssoAttrs = _.omit(state.ssoAttrs, (attr) -> attr is '')

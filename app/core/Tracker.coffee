@@ -76,7 +76,7 @@ module.exports = class Tracker extends CocoClass
 
     console.log 'Would identify', me.id, traits if debugAnalytics
     @trackEventInternal('Identify', {id: me.id, traits}) unless me?.isAdmin() and @isProduction
-    return unless @isProduction and not me.isAdmin()
+    #return unless @isProduction and not me.isAdmin()
 
     # Errorception
     # https://errorception.com/docs/meta

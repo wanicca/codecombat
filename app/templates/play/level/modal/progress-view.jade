@@ -3,8 +3,7 @@
     span.glyphicon.glyphicon-remove
   //- .well.well-sm.well-parchment
   if view.level.isProject()
-    h1(data-i18n='TODO')
-      | Project Complete!
+    h1(data-i18n="play_level.project_complete")
   else
     h1(data-i18n='play_level.level_complete')
 
@@ -51,8 +50,7 @@
           .row.publish-text
             .col-xs-8.col-xs-offset-2
               p
-                b(data-i18n="TODO")
-                  | Share this project with friends or family:
+                b(data-i18n="play_level.share_this_project")
           if view.session.isFake()
             .row
               .col-xs-8.col-xs-offset-2
@@ -68,10 +66,8 @@
           .row.publish-text
             .col-xs-8.col-xs-offset-2
               p
-                b(data-i18n="TODO")
-                  | Ready to share your project with your classmates?
-                span(data-i18n="TODO")
-                  | Click "Publish" to make it appear in the class gallery, then check out what your classmates built! You can always come back later and continue to make changes with your creation.
+                b(data-i18n="play_level.ready_to_share")
+                span(data-i18n="play_level.click_publish")
       else
         .well.well-sm.well-parchment
           h3.text-uppercase

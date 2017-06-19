@@ -565,6 +565,10 @@
     tip_good_idea: "The best way to have a good idea is to have a lot of ideas. - Linus Pauling"
     tip_programming_not_about_computers: "Computer Science is no more about computers than astronomy is about telescopes. - Edsger Dijkstra"
     tip_mulan: "Believe you can, then you will. - Mulan"
+    project_complete: "Project Complete!"
+    share_this_project: "Share this project with friends or family:"
+    ready_to_share: "Ready to share your project with your classmates?"
+    click_publish: "Click \"Publish\" to make it appear in the class gallery, then check out what your classmates built! You can always come back later and continue to make changes with your creation."
 
   play_game_dev_level:
     created_by: "Created by {{name}}"
@@ -1367,6 +1371,7 @@
   project_gallery:
     no_projects_published: "Be the first to publish a project in this course!"
     course_projects: "__courseName__ Projects"
+    view_project: "View Project"
 
   teacher:
     assigning_course: "Assigning course"

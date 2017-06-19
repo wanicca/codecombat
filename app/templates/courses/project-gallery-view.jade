@@ -13,5 +13,5 @@ flat-layout
         li.project-list-item(v-for="session in levelSessions")
           span.creator-name.p-r-1(v-if="users && creatorOfSession(session)")
             {{ creatorOfSession(session).broadName }}
-          a.view-project-link.btn.btn-lg.btn-forest(data-i18n="todo", :data-session-id="session._id", :href="getProjectViewUrl(session)")
-            | View Project
+          a.view-project-link.btn.btn-lg.btn-forest(:data-session-id="session._id", :href="getProjectViewUrl(session)")
+            {{ $t('project_gallery.view_project') }}

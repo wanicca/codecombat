@@ -1375,6 +1375,7 @@
   project_gallery:
     no_projects_published: "Be the first to publish a project in this course!"
     view_project: "View Project"
+    edit_project: "Edit Project"
 
   teacher:
     assigning_course: "Assigning course"

@@ -16,5 +16,8 @@ flat-layout
               | {{ creatorOfSession(session).firstName }}
               | {{ creatorOfSession(session).lastName }}.
               | ({{ creatorOfSession(session).name }})
-            a.view-project-link.btn.btn-lg.btn-forest(:data-session-id="session._id", :href="getProjectViewUrl(session)")
-              {{ $t('project_gallery.view_project') }}
+            .view-edit-buttons
+              a.edit-project-link.btn.btn-lg.btn-gold(:data-session-id="session._id", :href="getProjectEditUrl(session)" v-if="isMyProject(session)")
+                {{ $t('project_gallery.edit_project') }}
+              a.view-project-link.btn.btn-lg.btn-forest(:data-session-id="session._id", :href="getProjectViewUrl(session)")
+                {{ $t('project_gallery.view_project') }}

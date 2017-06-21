@@ -22,7 +22,6 @@ ProjectGalleryComponent = Vue.extend
     level: null
     course: null
     courseInstance: null
-    loaded: false
   computed:
     levelName: -> @level and utils.i18n(@level, 'name')
     courseName: -> @course and utils.i18n(@course, 'name')
@@ -43,6 +42,10 @@ ProjectGalleryComponent = Vue.extend
   methods:
     getProjectViewUrl: (session) ->
       return "/play/#{@level?.type}-level/#{@level?.slug}/#{session._id}"
+    getProjectEditUrl: (session) ->
+      return "/play/level/#{@level?.slug}?course=#{@course?._id}&course-instance=#{@courseInstance?._id}"
+    isMyProject: (session) ->
+      session.creator is me.id
     creatorOfSession: (session) ->
       _.find(@users, { _id: session.creator })
 

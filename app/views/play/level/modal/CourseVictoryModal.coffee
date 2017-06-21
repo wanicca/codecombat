@@ -138,7 +138,7 @@ module.exports = class CourseVictoryModal extends ModalView
         application.router.navigate(@galleryURL, {trigger: true})
         text = i18n.t('play_level.project_published_noty')
         unless wasAlreadyPublished
-          noty({text, layout: 'topCenter', type: 'success'})
+          noty({text, layout: 'topCenter', type: 'success', timeout: 5000})
 
   onLadder: ->
     # Preserve the supermodel as we navigate back to the ladder.

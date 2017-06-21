@@ -65,9 +65,12 @@
         .well.well-sm.well-parchment
           .row.publish-text
             .col-xs-8.col-xs-offset-2
-              p
-                b(data-i18n="play_level.ready_to_share")
-                span(data-i18n="play_level.click_publish")
+              if view.session.get('published')
+                p(data-i18n="play_level.already_published")
+              else
+                p
+                  b(data-i18n="play_level.ready_to_share")
+                  span(data-i18n="play_level.click_publish")
       else
         .well.well-sm.well-parchment
           h3.text-uppercase
@@ -105,12 +108,14 @@
           button#ladder-btn.btn.btn-illustrated.btn-default.btn-block.btn-lg.text-uppercase Ladder
       .col-sm-5
         if view.level.isProject()
-          button#publish-btn.btn.btn-illustrated.btn-success.btn-block.btn-lg.text-uppercase(data-i18n="play_level.publish")
-            | Publish
+          if view.session.get('published')
+            button#publish-btn.btn.btn-illustrated.btn-success.btn-block.btn-lg.text-uppercase(data-i18n="play_level.view_gallery")
+          else
+            button#publish-btn.btn.btn-illustrated.btn-success.btn-block.btn-lg.text-uppercase(data-i18n="play_level.publish")
         else if view.classroom && view.classroom.getSetting('backToMap') && view.classroom.getSetting('map')
           button#map-btn.btn.btn-illustrated.btn-primary.btn-block.btn-lg(data-i18n='play_level.done')
         else
           if !view.nextLevel.isNew()
             button#next-level-btn.btn.btn-illustrated.btn-primary.btn-block.btn-lg.text-uppercase(data-i18n='play_level.next_level')
           else
-            button#done-btn.btn.btn-illustrated.btn-primary.btn-block.btn-lg.text-uppercase(data-i18n='play_level.done')
+            button#done-btn.btn.btn-illustrated.btn-primary.btn-block.btn-lg.text-uppercase(data-i18n='play_level.done')          

@@ -68,11 +68,12 @@
               if view.session.get('published')
                 p
                   b(data-i18n="play_level.already_published_prefix")
-                  =" "
+                  br
                   span(data-i18n="play_level.already_published_suffix")
               else
                 p
                   b(data-i18n="play_level.ready_to_share")
+                  br
                   span(data-i18n="play_level.click_publish")
       else
         .well.well-sm.well-parchment
@@ -114,7 +115,7 @@
           if view.session.get('published')
             button#publish-btn.btn.btn-illustrated.btn-success.btn-block.btn-lg.text-uppercase(data-i18n="play_level.view_gallery")
           else
-            button#publish-btn.btn.btn-illustrated.btn-success.btn-block.btn-lg.text-uppercase(data-i18n="play_level.publish")
+            button#publish-btn.btn.btn-illustrated.btn-success.btn-block.btn-lg.text-uppercase(data-i18n="common.publish")
         else if view.classroom && view.classroom.getSetting('backToMap') && view.classroom.getSetting('map')
           button#map-btn.btn.btn-illustrated.btn-primary.btn-block.btn-lg(data-i18n='play_level.done')
         else

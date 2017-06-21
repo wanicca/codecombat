@@ -3,7 +3,7 @@ module.exports = {
   classrooms: require('./classrooms')
   courses: require('./courses')
   courseInstances: require('./course-instances')
-  levels: require('./level-sessions')
+  levels: require('./levels')
   levelSessions: require('./level-sessions')
   prepaids: require('./prepaids')
   skippedContacts: require('./skipped-contacts')

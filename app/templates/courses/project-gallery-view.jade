@@ -6,7 +6,7 @@ flat-layout
       h2(v-if="classroom")
         {{ classroom.name }}
       h1(v-if="course")
-        {{ $t('project_gallery.course_projects', { courseName: course.name }) }}
+        {{ courseName }}: {{ levelName }}
       div(v-if="_.isEmpty(levelSessions)")
         {{ $t('project_gallery.no_projects_published') }}
       ul.project-list.m-t-3(v-else)

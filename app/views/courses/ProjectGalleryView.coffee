@@ -2,15 +2,14 @@ RootComponent = require 'views/core/RootComponent'
 FlatLayout = require 'core/components/FlatLayout'
 api = require 'core/api'
 User = require 'models/User'
+Level = require 'models/Level'
+utils = require 'core/utils'
 
 ProjectGalleryComponent = Vue.extend
   name: 'project-gallery-component'
   template: require('templates/courses/project-gallery-view')()
   components:
     'flat-layout': FlatLayout
-  methods:
-    getLevelURL: (session) ->
-      'yay'
   props:
     courseInstanceID:
       type: String
@@ -19,9 +18,13 @@ ProjectGalleryComponent = Vue.extend
     levelSessions: []
     users: []
     classroom: null
+    level: null
     course: null
     courseInstance: null
     loaded: false
+  computed:
+    levelName: -> @level and utils.i18n(@level, 'name')
+    courseName: -> @course and utils.i18n(@course, 'name')
   created: ->
     Promise.all([
       api.courseInstances.fetchProjectGallery({ @courseInstanceID }).then (@levelSessions) =>
@@ -30,12 +33,15 @@ ProjectGalleryComponent = Vue.extend
         Promise.all([
           api.classrooms.getByHandle(@courseInstance.classroomID).then((@classroom) =>),
           api.courses.getByHandle(@courseInstance.courseID).then((@course) =>)
+          api.levels.fetchForClassroomAndCourse({ classroomID: @courseInstance.classroomID, courseID: @courseInstance.courseID }).then((@levels) =>)
         ])
     ]).then =>
+      @level = _.find(@levels, Level.isProject)
       @users.forEach (user) =>
         Vue.set(user, 'broadName', User.broadName(user))
   methods:
     getProjectViewUrl: (session) ->
+      # TODO don't stub this
       projectType = 'web-dev'
       levelSlug = 'wanted-poster'
       return "/play/#{projectType}-level/#{levelSlug}/#{session._id}"

@@ -27,11 +27,11 @@ ProjectGalleryComponent = Vue.extend
     courseName: -> @course and utils.i18n(@course, 'name')
   created: ->
     Promise.all([
-      api.courseInstances.fetchProjectGallery({ @courseInstanceID }).then (@levelSessions) =>
-        Promise.all(api.users.getByHandle(userID) for userID in _.unique(_.map(@levelSessions, 'creator'))).then((@users) =>)
+      api.courseInstances.fetchProjectGallery({ @courseInstanceID }).then((@levelSessions) =>)
       api.courseInstances.getByHandle(@courseInstanceID).then (@courseInstance) =>
         Promise.all([
-          api.classrooms.getByHandle(@courseInstance.classroomID).then((@classroom) =>),
+          api.classrooms.getByHandle(@courseInstance.classroomID).then((@classroom) =>).then =>
+            api.users.getForClassroom(@classroom, removeDeleted: true).then((@users) =>)
           api.courses.getByHandle(@courseInstance.courseID).then((@course) =>)
           api.levels.fetchForClassroomAndCourse({ classroomID: @courseInstance.classroomID, courseID: @courseInstance.courseID }).then((@levels) =>)
         ])

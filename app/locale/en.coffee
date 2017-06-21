@@ -1638,6 +1638,7 @@
     teacher_quest_more: "See all quests"
     teacher_quest_less: "See fewer quests"
     refresh_to_update: "(refresh the page to see updates)"
+    view_project_gallery: "View Project Gallery"
 
   share_licenses:
     share_licenses: "Share Licenses"

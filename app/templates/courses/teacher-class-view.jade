@@ -366,7 +366,7 @@ mixin allStudentsLevelProgressDot(progress, level, levelNumber)
   else if level.isProject()
     if courseInstance
       - link = view.urls.courseProjectGallery({courseInstance: courseInstance})
-    - labelText = translate('teacher.project_gallery')
+    - labelText = translate('teacher.view_project_gallery')
     - dotClass += ' progress-dot-lg';
   else if level.get('practice')
     if !(progress.completed || progress.started)

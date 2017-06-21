@@ -8,6 +8,30 @@ module.exports = {
 
   getByEmail: (email, options={}) ->
     fetchJson("/db/user", _.merge {}, options, { data: { email } })
+    
+  getForClassroom: (classroom, options) ->
+    removeDeleted = options.removeDeleted
+    delete options.removeDeleted
+    classroomID = classroom._id or classroom
+    limit = 10
+    skip = 0
+    size = _.size(classroom.members)
+    url = "/db/classroom/#{classroomID}/members"
+    options.data ?= {}
+    options.data.memberLimit = limit
+    options.remove = false
+    jqxhrs = []
+    while skip < size
+      options = _.cloneDeep(options)
+      options.data.memberSkip = skip
+      jqxhrs.push(fetchJson(url, options))
+      skip += limit
+    return Promise.all(jqxhrs).then (data) ->
+      users = _.flatten(data)
+      if removeDeleted
+        users = _.filter users, (user) ->
+          not user.deleted
+      return users
 
   signupWithPassword: ({userId, name, email, password}, options={}) ->
     fetchJson(@url(userId, 'signup-with-password'), _.assign({}, options, {

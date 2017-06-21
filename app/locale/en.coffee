@@ -1370,7 +1370,6 @@
 
   project_gallery:
     no_projects_published: "Be the first to publish a project in this course!"
-    course_projects: "__courseName__ Projects"
     view_project: "View Project"
 
   teacher:

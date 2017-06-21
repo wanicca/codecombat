@@ -99,11 +99,12 @@ describe 'CourseVictoryModal', ->
 
     it '(demo)', -> jasmine.demoModal(modal)
 
-  fdescribe 'given a project level', ->
+  describe 'given a project level', ->
     modal = null
 
     beforeEach (done) ->
       options = makeViewOptions()
+      @session = options.session
 
       # make the level not have a next level
       level = options.level
@@ -118,13 +119,13 @@ describe 'CourseVictoryModal', ->
       _.defer done
 
     describe 'its ProjectVictoryView', ->
-      it 'has a single large column, since there is no next level to display', ->
-
-      it 'has a publish button which sets session.published to true', ->
+      it 'has a publish button which sets session.published to true', (done) ->
         spyOn(application.router, 'navigate')
         button = modal.$el.find('#publish-btn')
         expect(button.length).toBe(1)
-        button.click()
-        expect(application.router.navigate).toHaveBeenCalled()
+        modal.onPublish().then =>
+          expect(application.router.navigate).toHaveBeenCalled()
+          done()
+        modal.session.fakeRequests[0]?.respondWith({ status: 200, responseText: '{}' })
 
     it '(demo)', -> jasmine.demoModal(modal)

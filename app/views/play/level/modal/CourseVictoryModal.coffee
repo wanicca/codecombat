@@ -133,7 +133,7 @@ module.exports = class CourseVictoryModal extends ModalView
       application.router.navigate(@galleryURL, {trigger: true})
     else
       @session.set({ published: true })
-      @session.save().then =>
+      return @session.save().then =>
         application.router.navigate(@galleryURL, {trigger: true})
 
   onLadder: ->

@@ -66,7 +66,10 @@
           .row.publish-text
             .col-xs-8.col-xs-offset-2
               if view.session.get('published')
-                p(data-i18n="play_level.already_published")
+                p
+                  b(data-i18n="play_level.already_published_prefix")
+                  =" "
+                  span(data-i18n="play_level.already_published_suffix")
               else
                 p
                   b(data-i18n="play_level.ready_to_share")

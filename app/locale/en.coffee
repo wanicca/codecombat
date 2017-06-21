@@ -568,8 +568,9 @@
     project_complete: "Project Complete!"
     share_this_project: "Share this project with friends or family:"
     ready_to_share: "Ready to share your project with your classmates?"
-    click_publish: "Click \"Publish\" to make it appear in the class gallery, then check out what your classmates built! You can always come back later and continue to make changes with your creation."
-    already_published: "Your changes have been published to the class gallery. Keep experimenting and making this project even better, or see what the rest of your class has built!"
+    click_publish: "Click \"Publish\" to make it appear in the class gallery, then check out what your classmates built! You can always come back later and continue to make changes with your creation. Any further changes will automatically be saved and shared with your classmates."
+    already_published_prefix: "Your changes have been published to the class gallery."
+    already_published_suffix: "Keep experimenting and making this project even better, or see what the rest of your class has built! Your changes will automatically be saved and shared with your classmates."
     view_gallery: "View Gallery"
 
   play_game_dev_level:

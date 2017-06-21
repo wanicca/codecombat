@@ -745,7 +745,7 @@ describe 'GET /db/course_instance/:handle/my-course-level-sessions', ->
     done()
 
 describe 'GET /db/course_instance/:handle/peer-projects', ->
-  beforeEach utils.wrap (done) ->
+  beforeEach utils.wrap ->
     yield utils.clearModels([CourseInstance, Course, User, Classroom, Campaign, Level])
     @teacher = yield utils.initUser({role: 'teacher'})
     admin = yield utils.initAdmin()
@@ -788,9 +788,8 @@ describe 'GET /db/course_instance/:handle/peer-projects', ->
       utils.makeLevelSession({}, {level: @projectLevel3, creator: @student2})
       utils.makeLevelSession({published: false, codeLanguage: 'javascript'}, {level: @projectLevel2, creator: @student2})
     ]
-    done()
 
-  it 'returns all published project sessions for all members of that course instance', utils.wrap (done) ->
+  it 'returns all published project sessions for all members of that course instance', utils.wrap ->
     url = utils.getURL("/db/course_instance/#{@courseInstance.id}/peer-projects")
     yield utils.loginUser(@student)
     [res, body] = yield request.getAsync({url, json: true})
@@ -800,11 +799,13 @@ describe 'GET /db/course_instance/:handle/peer-projects', ->
     expect(_.contains(ids, @session.id)).toBe(true)
     expect(_.contains(ids, @session2.id)).toBe(true)
     expect(_.contains(ids, @session3.id)).toBe(true)
-    done()
-
-  it 'returns 403 if you request a course instance that you are not a member of', utils.wrap (done) ->
+    
+  it 'returns 403 if you request a course instance that you are not a member or owner of', utils.wrap ->
     url = utils.getURL("/db/course_instance/#{@courseInstance.id}/peer-projects")
     yield utils.loginUser(@otherUser)
     [res, body] = yield request.getAsync({url, json: true})
     expect(res.statusCode).toBe(403)
-    done()
+
+    yield utils.loginUser(@teacher)
+    [res, body] = yield request.getAsync({url, json: true})
+    expect(res.statusCode).toBe(200)    

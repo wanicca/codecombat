@@ -1493,6 +1493,7 @@
     status_enrolled: "Expires on {{date}}"
     select_all: "Select All"
     project: "Project"
+    project_gallery: "Project Gallery"
     view_student_project: "View Student Project"
     view_arena_ladder: "View Arena Ladder"
     resource_hub: "Resource Hub"

@@ -17,3 +17,6 @@ module.exports =
 
   courseWorldMap: ({course, courseInstance, classroom}) ->
     "/play/#{course.get('campaignID')}?course-instance=#{courseInstance.id}"
+
+  courseProjectGallery: ({courseInstance}) ->
+    "/students/project-gallery/#{courseInstance.id}"

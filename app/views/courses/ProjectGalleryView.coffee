@@ -18,6 +18,7 @@ ProjectGalleryComponent = Vue.extend
     levelSessions: []
     users: []
     classroom: null
+    levels: null
     level: null
     course: null
     courseInstance: null
@@ -41,10 +42,7 @@ ProjectGalleryComponent = Vue.extend
         Vue.set(user, 'broadName', User.broadName(user))
   methods:
     getProjectViewUrl: (session) ->
-      # TODO don't stub this
-      projectType = 'web-dev'
-      levelSlug = 'wanted-poster'
-      return "/play/#{projectType}-level/#{levelSlug}/#{session._id}"
+      return "/play/#{@level?.type}-level/#{@level?.slug}/#{session._id}"
     creatorOfSession: (session) ->
       _.find(@users, { _id: session.creator })
 

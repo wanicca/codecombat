@@ -132,9 +132,13 @@ module.exports = class CourseVictoryModal extends ModalView
     if @session.isFake()
       application.router.navigate(@galleryURL, {trigger: true})
     else
+      wasAlreadyPublished = @session.get('published')
       @session.set({ published: true })
       return @session.save().then =>
         application.router.navigate(@galleryURL, {trigger: true})
+        text = i18n.t('play_level.project_published_noty')
+        unless wasAlreadyPublished
+          noty({text, layout: 'topCenter', type: 'success'})
 
   onLadder: ->
     # Preserve the supermodel as we navigate back to the ladder.

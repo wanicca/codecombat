@@ -572,6 +572,7 @@
     already_published_prefix: "Your changes have been published to the class gallery."
     already_published_suffix: "Keep experimenting and making this project even better, or see what the rest of your class has built! Your changes will automatically be saved and shared with your classmates."
     view_gallery: "View Gallery"
+    project_published_noty: "Your level has been published!"
 
   play_game_dev_level:
     created_by: "Created by {{name}}"

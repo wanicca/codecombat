@@ -1249,6 +1249,7 @@
     switch_to: "Switch To"
     greetings: "Greetings!"
     back_classrooms: "Back to my classrooms"
+    back_classroom: "Back to classroom"
     back_courses: "Back to my courses"
     edit_details: "Edit class details"
     purchase_enrollments: "Purchase Student Licenses"

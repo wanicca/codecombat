@@ -10,10 +10,11 @@ flat-layout
       div(v-if="_.isEmpty(levelSessions)")
         {{ $t('project_gallery.no_projects_published') }}
       ul.project-list.m-t-3(v-else)
-        li.project-list-item(v-for="session in levelSessions")
-          span.creator-name.p-r-1(v-if="users && creatorOfSession(session)")
-            | {{ creatorOfSession(session).firstName }}
-            | {{ creatorOfSession(session).lastName }}.
-            | ({{ creatorOfSession(session).name }})
-          a.view-project-link.btn.btn-lg.btn-forest(:data-session-id="session._id", :href="getProjectViewUrl(session)")
-            {{ $t('project_gallery.view_project') }}
+        .row
+          li.col-xs-8.col-xs-offset-2.project-list-item(v-for="session in levelSessions")
+            span.creator-name(v-if="users && creatorOfSession(session)")
+              | {{ creatorOfSession(session).firstName }}
+              | {{ creatorOfSession(session).lastName }}.
+              | ({{ creatorOfSession(session).name }})
+            a.view-project-link.btn.btn-lg.btn-forest(:data-session-id="session._id", :href="getProjectViewUrl(session)")
+              {{ $t('project_gallery.view_project') }}
